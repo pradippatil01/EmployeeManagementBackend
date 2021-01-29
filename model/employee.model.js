@@ -17,7 +17,8 @@ const employeeSchema =  mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        required: true
+        required: true,
+        unique:true
     },
     salary: {
         type: String,
