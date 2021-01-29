@@ -22,7 +22,8 @@ const employeeSchema =  mongoose.Schema({
     },
     salary: {
         type: String,
-        required: true
+        required: true,
+        unique:true
     },
     emailID: {
         type: String,
