@@ -23,6 +23,20 @@ class employeeServices {
             })
         })
     }
+
+    employeeDetailGetServices=()=>{
+        return employeeServDef.getAllData().then(result => {
+            return ({
+                message: "Employee data fetched sucessfully!",
+                data: result
+            })
+        }).catch(err => {
+            return ({
+                message: "Some error occurred while retrieving notes.",
+                error: err
+            })
+        })
+    }
 }
 
 module.exports = new employeeServices();

@@ -8,7 +8,7 @@ class employeeController {
         response.message =result.message;
         response.data = result.data;
         return res.status(500).send(response);
-        }).catch(err=>{
+        }).catch(err =>{
             response.sucess=false;
             response.message=err.message;
             response.error=err.error;
@@ -18,7 +18,17 @@ class employeeController {
 
     // Retrieve and return all employee from the database.
     findAll = (req, res) => {
-
+        return employeeServices.employeeDetailGetServices(req.body).then(result => {
+                response.sucess = true;
+                response.message =result.message;
+                response.data = result.data;
+                return res.status(500).send(response);
+        }).catch(err =>{
+            response.sucess=false;
+            response.message=err.message;
+            response.error=err.error;
+            return res.status(200).send(response);
+        })
     };
 
     // Find a single employee with a Id
