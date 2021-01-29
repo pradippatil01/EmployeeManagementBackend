@@ -7,11 +7,11 @@ module.exports = (app) => {
     app.get('/employeeDetailGet', employeeController.findAll);
 
     // Retrieve a single employee with employeeid
-    app.get('/employee/:eid', employeeController.findOne);
+    app.get('/employeeFetch/:phoneNumber', employeeController.findOne);
 
     // Update a employee with employeeid
-    app.put('/employee/:eid', employeeController.update);
+    app.put('/employeeUpdate/:phoneNumber', employeeController.update);
 
     // Delete a employee with employeeid
-    app.delete('/employee/:eid', employeeController.delete);
+    app.delete('/employeeDelete/:phoneNumber', employeeController.delete);
 }
