@@ -1,18 +1,17 @@
 module.exports = (app) => {
-    const employee = require('../controllers/employee.controller.js');
-
+    const employeeController = require('../controller/employee.controller');
     // Create a new employee
-    app.post('/register', employee.create);
+    app.post('/employeeRegistration', employeeController.employeeRegistraterController);
 
     // Retrieve all employee
-    app.get('/employee', employee.findAll);
+    app.get('/employeeDetailGet', employeeController.findAll);
 
     // Retrieve a single employee with employeeid
-    app.get('/employee/:eid', employee.findOne);
+    app.get('/employee/:eid', employeeController.findOne);
 
     // Update a employee with employeeid
-    app.put('/employee/:eid', employee.update);
+    app.put('/employee/:eid', employeeController.update);
 
     // Delete a employee with employeeid
-    app.delete('/employee/:eid', employee.delete);
+    app.delete('/employee/:eid', employeeController.delete);
 }

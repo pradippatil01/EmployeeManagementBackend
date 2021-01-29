@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 /**
  * Defining the employee model in Mongoose
  */
-const employeeSchema = new mongoose.Schema({
+const employeeSchema =  mongoose.Schema({
     firstName: {
         type: String,
         required: true
@@ -37,4 +37,4 @@ const employeeSchema = new mongoose.Schema({
     }
 });
 
-const employees = mongoose.model('employees', employeeSchema);
+module.exports =  mongoose.model('employees', employeeSchema);
