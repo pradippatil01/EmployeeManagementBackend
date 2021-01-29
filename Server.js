@@ -11,10 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 
-// define a simple route
-app.get('/', (req, res) => {
-    res.json({"message": "Welcome to employeepayroll application. Organize and keep track of all your notes."});
-});
+require('./route/employee.routes.js')(app);
 
 // listen for requests
 app.listen(3000, () => {
