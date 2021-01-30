@@ -1,3 +1,11 @@
+/**************************************************************************
+*   Excecution : 1. default Node 
+*   Purpose    : Employee payroll - Building a Restful CRUD API with Node.js, Express and MongoDB
+*   @description 
+*   @author    : Pradip R patil (BridgeLabz)
+*   @file      : server.js
+*   @version   : v15.6.0
+***************************************************************************/
 const express = require('express');
 const bodyParser = require('body-parser');
 const connection = require('./config/DB.connect');

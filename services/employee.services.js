@@ -1,6 +1,6 @@
 const employeeServDef = require('./servicesDef');
 class employeeServices {
-    employeeRegisterServices = (req) => {
+    employeeRegisterServices = (req,res) => {
         let employeeData = {
             firstName: req.firstName,
             lastName: req.lastName,
@@ -11,7 +11,7 @@ class employeeServices {
             city: req.city,
             department: req.department
         }
-        return employeeServDef.create(employeeData).then(result => {
+         return employeeServDef.create(employeeData,res).then(result => {
             return ({
                 message: "Employee data addeed sucessfully!",
                 data: result
@@ -67,14 +67,14 @@ class employeeServices {
     }
 
     employeeDeletedataServices=(req,res)=>{
-       return employeeServDef.DeleteData(req.params.phoneNumber).then(result => {
+       return employeeServDef.DeleteData(req.params.phoneNumber).then(result => {        
             return ({
                 message: "Employee data deleted sucessfully!",
                 data: result
             })
         }).catch(err => {
             return ({
-                message: "Some error occurred while retrieving data.",
+                message: "Some error occurred while deleting data.",
                  error: err
             })
         })

@@ -5,8 +5,7 @@ class servicesDefination {
     /** 
      *  store data in database
      */
-    create = (req) => {
-        console.log(req)
+    create = (req,res) => {
         return new Promise((resolve, reject) => {
             let employeeDeatils = new employeeModel(req);
             employeeDeatils.save().then(result => {
@@ -19,7 +18,7 @@ class servicesDefination {
     /**
      *  get all data from database
      */
-    getAllData = (req) => {
+    getAllData = () => {
         return new Promise((resolve, reject) => {
             employeeModel.find().then(result => {
                 resolve(result);
@@ -64,7 +63,7 @@ class servicesDefination {
 
     DeleteData=(req)=>{
         return new Promise((resolve, reject) => {
-            employeeModel.findOneAndRemove({phoneNumber:req}).then(result => {
+            employeeModel.deleteOne({phoneNumber:req}).then(result => {
                 resolve(result);
             }).catch(err => {
                 reject(err);
