@@ -1,17 +1,17 @@
-const employeeServDef = require('./servicesDef');
+const employeeModel = require('../model/employee.model');
 class employeeServices {
-    employeeRegisterServices = (req,res) => {
+    employeeRegisterServices = (req) => {
         let employeeData = {
-            firstName: req.firstName,
-            lastName: req.lastName,
-            gender: req.gender,
-            phoneNumber: req.phoneNumber,
-            salary: req.salary,
-            emailID: req.emailID,
-            city: req.city,
-            department: req.department
+            "firstName": req.firstName,
+            "lastName": req.lastName,
+            "gender": req.gender,
+            "phoneNumber": req.phoneNumber,
+            "salary": req.salary,
+            "emailID": req.emailID,
+            "city": req.city,
+            "department": req.department
         }
-         return employeeServDef.create(employeeData,res).then(result => {
+        return employeeModel.create(employeeData).then(result => {
             return ({
                 message: "Employee data addeed sucessfully!",
                 data: result
@@ -25,7 +25,7 @@ class employeeServices {
     }
 
     employeeDetailGetServices = () => {
-        return employeeServDef.getAllData().then(result => {
+        return employeeModel.getAllData().then(result => {
             return ({
                 message: "Employee data fetched sucessfully!",
                 data: result
@@ -38,27 +38,24 @@ class employeeServices {
         })
     }
 
-    singleEmployeeDataFetch=(req,res)=>{
-        return employeeServDef.getSingleData(req.params.phoneNumber).then(result => {
+    employeeDetailUpdateServices = (req) => {
+        return employeeModel.updateData(req.params.eid, req.body).then(result => {
+            if (!result) {
+                return ({
+                    message: "data not found with id " + req.params.eid,
+                });
+            }
             return ({
-                message: "Employee data fetched sucessfully!",
+                message: "data updated successfully!",
                 data: result
             })
         }).catch(err => {
-            return ({
-                message: "Some error occurred while retrieving data.",
-                error: err
-            })
-        })
-    }
-
-    employeeDetailUpdateServices = (req, res) => {
-        return employeeServDef.DeleteData(req.params.phoneNumber).then(result => {
-            return ({
-                message: "Employee data updated sucessfully!",
-                data: result
-            })
-        }).catch(err => {
+            if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                return ({
+                    message: "data not found with id " + req.params.eid,
+                    error: err.message
+                });
+            }
             return ({
                 message: "Some error occurred while updating data.",
                 error: err
@@ -66,17 +63,28 @@ class employeeServices {
         })
     }
 
-    employeeDeletedataServices=(req,res)=>{
-       return employeeServDef.DeleteData(req.params.phoneNumber).then(result => {        
+    employeeDeletedataServices = (req) => {
+        return employeeModel.DeleteData(req.params.eid).then(result => {
+            if (!result) {
+                return ({
+                    message: "data not found with id " + req.params.eid,
+                });
+            }
             return ({
-                message: "Employee data deleted sucessfully!",
+                message: "data deleted successfully!",
                 data: result
             })
         }).catch(err => {
+            if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                return ({
+                    message: "data not found with id " + req.params.eid,
+                    error: err.message
+                });
+            }
             return ({
-                message: "Some error occurred while deleting data.",
-                 error: err
-            })
+                message: "Could not delete note with id " + req.params.eid,
+                error: err.message
+            });
         })
     }
 }
