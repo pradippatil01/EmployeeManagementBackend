@@ -100,5 +100,5 @@ class servicesDefination {
         })
     }
 }
-
+ 
 module.exports = new servicesDefination();
