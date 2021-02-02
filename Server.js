@@ -19,6 +19,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 
+//catch error
+app.use((error, req, res, next) => {
+    console.log(error);
+    return res.status(500).json({ error: error.toString() });
+  });
+
 require('./route/employee.routes.js')(app);
 
 // listen for requests

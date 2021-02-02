@@ -44,7 +44,8 @@ class servicesDefination {
     /** 
      *  store data in database
      */
-    create = (req) => {
+    create = (req,next) => {
+        try{
         return new Promise((resolve, reject) => {
             let employeeDeatils = new employees(req);
             employeeDeatils.save().then(result => {
@@ -53,7 +54,10 @@ class servicesDefination {
                 reject(err);
             })
         })
+    }catch(err){
+        next(err)
     }
+}
     /**
     *  get all data from database
     */
@@ -79,20 +83,33 @@ class servicesDefination {
         })
     }
 
+    getSingleData = (req) => {
+        return new Promise((resolve, reject) => {
+            employees.findById(req).then(result => {
+                resolve(result);
+            }).catch(err => {
+                reject(err)
+            })
+        })
+
+}
     /**
      * update data of database
      */
-    updateData = (req, reqU) => {
+    updateData = (req, oldData) => {
+        console.log(oldData.firstName);
         return new Promise((resolve, reject) => {
-            employees.findByIdAndUpdate(req, {
-                firstName: reqU.firstName,
-                lastName: reqU.lastName,
-                gender: reqU.gender,
-                phoneNumber: reqU.phoneNumber,
-                emailID: reqU.emailID,
-                city: reqU.city,
-                department: reqU.department
-            }, { new: true }).then(result => {
+            let reqData = {
+                firstName: req.body.firstName || oldData.firstName,
+                lastName: req.body.lastName || oldData.lastName,
+                gender: req.body.gender || oldData.gender,
+                phoneNumber: req.body.phoneNumber || oldData.phoneNumber,
+                salary: req.body.salary || oldData.salary,
+                emailID: req.body.emailID || oldData.emailID,
+                city: req.body.city || oldData.city,
+                department: req.body.department || oldData.department
+            }
+            employees.findByIdAndUpdate(req.params.eid, reqData, { new: true }).then(result => {
                 resolve(result);
             }).catch(err => {
                 reject(err);
@@ -100,5 +117,5 @@ class servicesDefination {
         })
     }
 }
- 
+
 module.exports = new servicesDefination();

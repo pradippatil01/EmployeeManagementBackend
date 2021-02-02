@@ -1,27 +1,31 @@
 const employeeModel = require('../model/employee.model');
 class employeeServices {
-    employeeRegisterServices = (req) => {
-        let employeeData = {
-            "firstName": req.firstName,
-            "lastName": req.lastName,
-            "gender": req.gender,
-            "phoneNumber": req.phoneNumber,
-            "salary": req.salary,
-            "emailID": req.emailID,
-            "city": req.city,
-            "department": req.department
+    employeeRegisterServices = (req, next) => {
+        try {
+            let employeeData = {
+                "firstName": req.firstName,
+                "lastName": req.lastName,
+                "gender": req.gender,
+                "phoneNumber": req.phoneNumber,
+                "salary": req.salary,
+                "emailID": req.emailID,
+                "city": req.city,
+                "department": req.department
+            }
+            return employeeModel.create(employeeData).then(result => {
+                return ({
+                    message: "Employee data addeed sucessfully!",
+                    data: result
+                })
+            }).catch(err => {
+                return ({
+                    message: "Fail to add data !",
+                    error:err.message
+                })
+            })
+        } catch (err) {
+            next(err)
         }
-        return employeeModel.create(employeeData).then(result => {
-            return ({
-                message: "Employee data addeed sucessfully!",
-                data: result
-            })
-        }).catch(err => {
-            return ({
-                message: "Fail to add data!",
-                error: err
-            })
-        })
     }
 
     employeeDetailGetServices = () => {
@@ -39,27 +43,47 @@ class employeeServices {
     }
 
     employeeDetailUpdateServices = (req) => {
-        return employeeModel.updateData(req.params.eid, req.body).then(result => {
-            if (!result) {
+        return employeeModel.getSingleData(req.params.eid).then((data) => {
+            if (!data) {
                 return ({
-                    message: "data not found with id " + req.params.eid,
+                    message: "data not found with id " + req.params.eid
                 });
+            } else {
+               let oldData = data;
+                return employeeModel.updateData(req, oldData).then(result => {
+                    // if (!result) {
+                    //     return ({
+                    //         message: "data not found with id " + req.params.eid,
+                    //     });
+                    // }
+                    return ({
+                        message: "data updated successfully!",
+                        data: result
+                    })
+                }).catch(err => {
+                    if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                        return ({
+                            message: "data not found with id " + req.params.eid,
+                            error: err
+                        });
+                    }
+                    return ({
+                        message: "Some error occurred while updating data.",
+                        error: err
+                    })
+                })
             }
-            return ({
-                message: "data updated successfully!",
-                data: result
-            })
         }).catch(err => {
-            if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+            if (err.kind === 'ObjectId') {
                 return ({
                     message: "data not found with id " + req.params.eid,
-                    error: err.message
+                    error: err
                 });
             }
             return ({
-                message: "Some error occurred while updating data.",
+                message: "Error retrieving data with id " + req.params.eid,
                 error: err
-            })
+            });
         })
     }
 
@@ -78,12 +102,12 @@ class employeeServices {
             if (err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return ({
                     message: "data not found with id " + req.params.eid,
-                    error: err.message
+                    errMessage: err.message
                 });
             }
             return ({
                 message: "Could not delete note with id " + req.params.eid,
-                error: err.message
+                errMessage: err.message
             });
         })
     }
