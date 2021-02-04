@@ -1,10 +1,10 @@
 module.exports = (app) => {
     const employeeController = require('../controller/employee.controller');
     // Create a new employee
-    app.post('/employee', employeeController.register);
+    app.post('/employee/register', employeeController.register);
 
     // Retrieve all employee
-    app.get('/employee', employeeController.getEmployeeAll);
+    app.get('/employee/read', employeeController.getEmployeeAll);
 
     // Update a employee with employeeid
     app.put('/employee/:eid', employeeController.update);

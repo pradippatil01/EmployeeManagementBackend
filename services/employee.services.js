@@ -30,6 +30,11 @@ class employeeServices {
 
     employeeDetailGetServices = () => {
         return employeeModel.getAllData().then(result => {
+            if (result.length == 0) {
+                return ({
+                    message: " Their is no data found"
+                })
+            }
             return ({
                 message: "Employee data fetched sucessfully!",
                 data: result
@@ -49,13 +54,18 @@ class employeeServices {
                     message: "data not found with id " + req.params.eid
                 });
             } else {
-               let oldData = data;
-                return employeeModel.updateData(req, oldData).then(result => {
-                    // if (!result) {
-                    //     return ({
-                    //         message: "data not found with id " + req.params.eid,
-                    //     });
-                    // }
+                let oldData = data;
+                let reqData = {
+                    firstName: req.body.firstName || oldData.firstName,
+                    lastName: req.body.lastName || oldData.lastName,
+                    gender: req.body.gender || oldData.gender,
+                    phoneNumber: req.body.phoneNumber || oldData.phoneNumber,
+                    salary: req.body.salary || oldData.salary,
+                    emailID: req.body.emailID || oldData.emailID,
+                    city: req.body.city || oldData.city,
+                    department: req.body.department || oldData.department
+                }
+                return employeeModel.updateData(req, reqData).then(result => {
                     return ({
                         message: "data updated successfully!",
                         data: result

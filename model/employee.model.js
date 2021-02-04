@@ -97,19 +97,8 @@ class servicesDefination {
      * update data of database
      */
     updateData = (req, oldData) => {
-        console.log(oldData.firstName);
         return new Promise((resolve, reject) => {
-            let reqData = {
-                firstName: req.body.firstName || oldData.firstName,
-                lastName: req.body.lastName || oldData.lastName,
-                gender: req.body.gender || oldData.gender,
-                phoneNumber: req.body.phoneNumber || oldData.phoneNumber,
-                salary: req.body.salary || oldData.salary,
-                emailID: req.body.emailID || oldData.emailID,
-                city: req.body.city || oldData.city,
-                department: req.body.department || oldData.department
-            }
-            employees.findByIdAndUpdate(req.params.eid, reqData, { new: true }).then(result => {
+            employees.findByIdAndUpdate(req.params.eid, oldData, { new: true }).then(result => {
                 resolve(result);
             }).catch(err => {
                 reject(err);
